@@ -5,9 +5,33 @@ import customtkinter
 from PIL import Image, ImageTk
 import os
 
+# フォルダの選択
 def filedialog_clicked():
     iDir = os.path.abspath(os.path.dirname(__file__))
+    # 選択したフォルダの絶対パスを取得
     folder_name = tk.filedialog.askdirectory(initialdir=iDir)
+    # ※確認用なので後で消す
+    print(folder_name)
+
+    load_images(folder_name)
+
+# 選択したフォルダ内の画像ファイルのみ絶対パスを取得
+def load_images(folder_name):
+    # 取得したパスを格納するために空のリストを作成
+    images_paths = []
+    # 画像ファイルかの判断に使う
+    exts = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
+
+    # 選択したフォルダの中身を取得
+    for root, dirs, files in os.walk(folder_name):
+        for name in files + dirs:
+            image_path = os.path.join(root, name)
+            # パスの末尾の文字列（拡張子）を見て画像ファイルの場合のみリストに追加
+            if image_path.endswith(exts):
+                images_paths.append(image_path)
+    print(images_paths)
+
+# 【作業】取得したパスをランダムに選出する用の関数を用意する
 
 class Window:
     def __init__(self,root):
@@ -45,6 +69,7 @@ canvas = tk.Canvas(root, width=canvas_w, height=canvas_h)
 canvas.place(x=0, y=0)
 
 # 画像の取得
+# 【作業】ランダムで1つ画像を選んで変数に格納→Image.openの引数に
 img = Image.open('hoge.jpg')
 
 # 画像のサイズを取得
@@ -63,6 +88,7 @@ if h > canvas_h:
 img = ImageTk.PhotoImage(img)
 canvas.create_image(0, 0, image=img, anchor=tk.NW)
 
+# クラスの呼び出し？
 Window(root)
 
 # メインループの実行
