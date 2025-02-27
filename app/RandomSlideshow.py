@@ -6,6 +6,8 @@ from PIL import Image, ImageTk
 import random
 import os
 
+# 【作業】以下をRandomViewerクラスとしてまとめる（裏側の処理はここにまとめたい）
+# 【メモ】全画像パス、ランダムで選出した画像パスの２つクラス変数が必要？初期値は空文字で
 # フォルダの選択
 def filedialog_clicked():
     iDir = os.path.abspath(os.path.dirname(__file__))
@@ -28,6 +30,8 @@ def load_images(folder_name):
             # パスの末尾の文字列（拡張子）を見て画像ファイルの場合のみリストに追加
             if image_path.endswith(exts):
                 images_paths.append(image_path)
+                # 【作業】↑をクラス変数に格納
+   
 
     # ※確認用なので後で消す            
     # print(images_paths)
@@ -35,6 +39,8 @@ def load_images(folder_name):
     return images_paths
 
     # 【作業】取得したパスをランダムに選出する用の関数を用意する
+    # 【作業】random.choiceの引数はクラス変数を使用する
+    # 【作業】クラス変数が格納されているかで分岐（フォルダ選択前にNEXTを押された時用）
     # def random_select_images(images_paths):
     #     random.choice(images_paths)
 
@@ -67,6 +73,7 @@ class Window:
         canvas.place(x=0, y=0)
 
 # 【作業】ランダムで1つ画像を選んで変数に格納→Image.openの引数に
+# 【作業】RandomViewerクラスのオブジェクトを作成して変数を使用する
         img = Image.open('hoge.jpg')
 
         # 画像のサイズを取得
