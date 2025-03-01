@@ -22,7 +22,7 @@ class RandomViewerApp:
         global folder_name
         folder_name = tk.filedialog.askdirectory(initialdir=iDir)
         self.load_images()
-        self.random_select_images(self.all_images_paths)
+        # self.random_select_images(self.all_images_paths)
         # print(self.folder_name)       
         # print(self.random_image)
         # img = Image.open(self.random_image)
@@ -65,19 +65,29 @@ class RandomViewerApp:
         # 画像のサイズを取得
         w = img.width
         h = img.height
+        print(str(img.width) + '×' + str(img.height))
 
-        # 画像の縦幅がcanvasの縦幅より大きい場合リサイズ
+        # 画像の横幅がcanvasの横幅より大きい場合リサイズ
         if w > self.canvas_w:
             img = img.resize((int(w * (self.canvas_w / w)), int(h * (self.canvas_w / w))))
+            w = img.width
+            h = img.height
+            print('画像の横幅がcanvasの横幅より大きい場合リサイズ')
+            print(str(img.width) + '×' + str(img.height))
             
-        # 画像の横幅がcanvasの横幅より大きい場合リサイズ
+        # 画像の縦幅がcanvasの縦幅より大きい場合リサイズ
         if h > self.canvas_h:
             img = img.resize((int(w * (self.canvas_h / h)), int(h * (self.canvas_h / h))))
+            w = img.width
+            h = img.height
+            print('画像の縦幅がcanvasの縦幅より大きい場合リサイズ')
+        
+        print(str(img.width) + '×' + str(img.height))
 
         # 画像を表示
 
         self.display_img = ImageTk.PhotoImage(img)
-        self.canvas.create_image(0, 0, image=self.display_img, anchor=tk.NW)
+        self.canvas.create_image((self.canvas_w - w) / 2, (self.canvas_h - h) / 2, image=self.display_img, anchor=tk.NW)
 
     def wedget(self,root):
         # ウィンドウのタイトル
