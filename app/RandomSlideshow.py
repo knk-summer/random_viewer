@@ -89,7 +89,7 @@ class RandomViewerApp:
 
     def wedget(self,root):
         # ウィンドウのタイトル
-        root.title('random_slideshow')
+        root.title('RandomViewer')
 
         # ウィンドウのサイズ変更の可否
         root.resizable(False, False)
@@ -98,28 +98,34 @@ class RandomViewerApp:
         root.configure(bg='#DBDBDB')
 
         # ウィジェットの配置（place()：ウィジェットを座標で配置）
-        label1 = tk.Label(root, text='ラベル1')
-        label1.place(x=100, y=50)
+        # customtkinter.set_appearance_mode("Dark") 
+
+        # tk.NE：座標の基準位置をボタン右上に
+        folder_btn = customtkinter.CTkButton(root, width=300, height=50, text='フォルダ選択', font=('メイリオ', 19, 'bold'), command=self.filedialog_clicked)
+        folder_btn.place(relx=0.95, rely=0.7, anchor=tk.NE)
 
         # tk.SE：座標の基準位置をボタン右下に
-        next_btn = tk.Button(root, text='NEXT', font=('', 20), command=self.load_images)
-        next_btn.place(relx=0.9, rely=0.9, anchor=tk.SE, width=200, height=40)
-        # tk.NE：座標の基準位置をボタン右上に
-        folder_btn = tk.Button(root, text='フォルダ選択', command=self.filedialog_clicked)
-        folder_btn.place(relx=0.9, rely=0.1, anchor=tk.NE, width=200, height=40)
+        next_btn = customtkinter.CTkButton(root, width=300, height=50, text='次の画像へ', font=('メイリオ', 19, 'bold'), command=self.load_images)
+        next_btn.place(relx=0.95, rely=0.9, anchor=tk.SE)
+
+        title_label = customtkinter.CTkLabel(root, text='RandomViewer', font=('Candara', 34))
+        title_label.place(relx=0.91, rely=0.2, anchor=tk.SE)
+
+        info_label = customtkinter.CTkLabel(root, width=200, height=40, text='画像クリックで元の画像を表示します' + '\n' + '（別ウィンドウが開きます）', font=('メイリオ', 16))
+        info_label.place(relx=0.935, rely=0.35, anchor=tk.SE)
 
         # canvas（画像表示範囲）の作成
         self.canvas_w = 600
         self.canvas_h = 600
-        self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h, bg='#E7E7E7', cursor='hand2')
+        self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h, bg='#E5E5E5', cursor='hand2')
         self.canvas.place(x=0, y=0)
 
 # tkオブジェクトの作成
-root = tk.Tk()
+root = customtkinter.CTk()
 # ウィンドウのサイズと出現位置
 root.geometry('1000x600+200+50')
 
-# クラスの呼び出し？
+# クラスの呼び出し
 RandomViewerApp(root)
 
 # メインループの実行
