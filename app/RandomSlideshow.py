@@ -113,7 +113,7 @@ class RandomViewerApp:
         # canvas（画像表示範囲）の作成
         self.canvas_w = 600
         self.canvas_h = 600
-        self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h,bg='blue')
+        self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h,bg='#E7E7E7')
         self.canvas.place(x=0, y=0)
 
         # if self.random_image:
