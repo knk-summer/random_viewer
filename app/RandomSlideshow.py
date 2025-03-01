@@ -1,13 +1,12 @@
 # ライブラリのインポート（asで別名をつけてる）
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 import customtkinter
 from PIL import Image, ImageTk
 import random
 import os
 
-# 【作業】以下をRandomViewerAppクラスとしてまとめる（裏側の処理はここにまとめたい）
-# 【メモ】全画像パス、ランダムで選出した画像パスの２つクラス変数が必要？初期値は空文字で
 class RandomViewerApp:
     def __init__(self,root):
         folder_name = ''
@@ -22,37 +21,28 @@ class RandomViewerApp:
         global folder_name
         folder_name = tk.filedialog.askdirectory(initialdir=iDir)
         self.load_images()
-        # self.random_select_images(self.all_images_paths)
-        # print(self.folder_name)       
-        # print(self.random_image)
-        # img = Image.open(self.random_image)
 
     # 選択したフォルダ内の全画像ファイルの絶対パスを取得
     def load_images(self):
-        # 取得したパスを格納するために空のリストを作成
-        paths = []
-        # 画像ファイルかの判断に使う
-        exts = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
+        if folder_name:
+            # 取得したパスを格納するために空のリストを作成
+            paths = []
+            # 画像ファイルかの判断に使う
+            exts = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
 
-        # 選択したフォルダの中身を取得
-        for root, dirs, files in os.walk(folder_name):
-            for name in files + dirs:
-                image_path = os.path.join(root, name)
-                # パスの末尾の文字列（拡張子）を見て画像ファイルの場合のみリストに追加
-                if image_path.endswith(exts):
-                    paths.append(image_path)
-        self.all_images_paths = paths
-        self.random_select_images(self.all_images_paths)
-        # self.display_image()
-
-        
-        # ※確認用なので後で消す            
-        # print(paths)
-        # print(random.choice(paths))
-        
-        # 【作業】取得したパスをランダムに選出する用の関数を用意する
-        # 【作業】random.choiceの引数はクラス変数を使用する
-        # 【作業】クラス変数が格納されているかで分岐（フォルダ選択前にNEXTを押された時用）
+            # 選択したフォルダの中身を取得
+            for root, dirs, files in os.walk(folder_name):
+                for name in files + dirs:
+                    image_path = os.path.join(root, name)
+                    # パスの末尾の文字列（拡張子）を見て画像ファイルの場合のみリストに追加
+                    if image_path.endswith(exts):
+                        paths.append(image_path)
+            self.all_images_paths = paths
+            self.random_select_images(self.all_images_paths)
+        # フォルダ未選択時にエラーメッセージボックス表示
+        else:
+            messagebox.showerror('エラー','フォルダを選択してください')
+            
     def random_select_images(self, paths):
         self.random_image = random.choice(paths)
         self.random_image = self.random_image.replace('\\','/')
@@ -115,53 +105,6 @@ class RandomViewerApp:
         self.canvas_h = 600
         self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h,bg='#E7E7E7')
         self.canvas.place(x=0, y=0)
-
-        # if self.random_image:
-        #     label1['text'] = self.random_image
-        #     label1.update()
-
-        # label1 = tk.Label(root, text='ラベル１')
-        # label1.place(x=100, y=50)
-
-        # img = Image.open('\\Users\\hydra\\Documents\\★好きなもの（Twitterアーカイブ）\\写真\\ふりーな_kan_me.png')
-   
-
-        # self.display_image(app)
-        # if self.app.random_image:
-        #     label1.update()
-        #     label1['text'] = self.app.random_image
-        # global img
-        # img = Image.open('fuyo.png')
-        # img = ImageTk.PhotoImage(img)
-        # canvas.create_image(0, 0, image=img, anchor=tk.NW)
-
-        # print(self.app.random_image)
-        # self.display_image(root,self.app)
-
-        # 【作業】ランダムで1つ画像を選んで変数に格納→Image.openの引数に
-# 【作業】RandomViewerクラスのオブジェクトを作成して変数を使用する
-    # def display_image(self,root):
-        # print(self.app.random_image)
-        # current_img = relative_to(self.app.random_image)
-        # img = Image.open('C:\\Users\\hydra\\Documents\\★好きなもの（Twitterアーカイブ）\\写真\\fuyo.png')
-
-        # # 画像のサイズを取得
-        # w = img.width
-        # h = img.height
-
-        # # 画像の縦幅がcanvasの縦幅より大きい場合リサイズ
-        # if w > self.canvas_w:
-        #     img = img.resize((int(w * (self.canvas_w / w)), int(h * (self.canvas_w / w))))
-            
-        # # 画像の横幅がcanvasの横幅より大きい場合リサイズ
-        # if h > self.canvas_h:
-        #     img = img.resize((int(w * (self.canvas_h / h)), int(h * (self.canvas_h / h))))
-
-        # # 画像を表示
-
-        # display_img = ImageTk.PhotoImage(img)
-        # self.canvas.create_image(0, 0, image=display_img, anchor=tk.NW)
-
 
 # tkオブジェクトの作成
 root = tk.Tk()
