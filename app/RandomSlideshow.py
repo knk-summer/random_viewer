@@ -9,6 +9,7 @@ import os
 
 class RandomViewerApp:
     def __init__(self,root):
+        # フォルダが選択されているか判別するために空文字格納
         folder_name = ''
         self.all_images_paths = ''
         self.random_image = ''
@@ -17,8 +18,8 @@ class RandomViewerApp:
     # フォルダの選択
     def filedialog_clicked(self):
         iDir = os.path.abspath(os.path.dirname(__file__))
-        # 選択したフォルダの絶対パスを取得
         global folder_name
+        # 選択したフォルダの絶対パスを取得
         folder_name = tk.filedialog.askdirectory(initialdir=iDir)
         self.load_images()
 
@@ -58,35 +59,31 @@ class RandomViewerApp:
         # 画像のサイズを取得
         w = self.op_img.width
         h = self.op_img.height
-        print(str(self.op_img.width) + '×' + str(self.op_img.height))
 
         # 画像の横幅がcanvasの横幅より大きい場合リサイズ
         if w > self.canvas_w:
             self.resize_img = self.op_img.resize((int(w * (self.canvas_w / w)), int(h * (self.canvas_w / w))))
             w = self.resize_img.width
             h = self.resize_img.height
-            print('画像の横幅がcanvasの横幅より大きい場合リサイズ')
-            print(str(self.resize_img.width) + '×' + str(self.resize_img.width))
             
         # 画像の縦幅がcanvasの縦幅より大きい場合リサイズ
         if h > self.canvas_h:
             self.resize_img = self.op_img.resize((int(w * (self.canvas_h / h)), int(h * (self.canvas_h / h))))
             w = self.resize_img.width
             h = self.resize_img.height
-            print('画像の縦幅がcanvasの縦幅より大きい場合リサイズ')
-        
-        print(str(self.resize_img.width) + '×' + str(self.resize_img.height))
 
-        # 画像を表示
-
+        # 画像をcanvas上に表示
         self.display_img = ImageTk.PhotoImage(self.resize_img)
+        # 画像の位置がcanvasの中央になるように指定
         self.canvas.create_image((self.canvas_w - w) / 2, (self.canvas_h - h) / 2, image=self.display_img, anchor=tk.NW)
+        # 画像クリック時の処理
         self.canvas.bind('<Button-1>',self.image_clicked)
     
-    # 画像クリック時の処理（引数にevent必須！）※
+    # 画像クリック時の処理（引数にevent必須）
     def image_clicked(self,event):
         self.op_img.show()
 
+    # GUIの設定
     def wedget(self,root):
         # ウィンドウのタイトル
         root.title('RandomViewer')
@@ -98,8 +95,6 @@ class RandomViewerApp:
         root.configure(bg='#DBDBDB')
 
         # ウィジェットの配置（place()：ウィジェットを座標で配置）
-        # customtkinter.set_appearance_mode("Dark") 
-
         # tk.NE：座標の基準位置をボタン右上に
         folder_btn = customtkinter.CTkButton(root, width=300, height=50, text='フォルダ選択', font=('メイリオ', 19, 'bold'), command=self.filedialog_clicked)
         folder_btn.place(relx=0.95, rely=0.7, anchor=tk.NE)
@@ -120,10 +115,11 @@ class RandomViewerApp:
         self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h, bg='#E5E5E5', cursor='hand2')
         self.canvas.place(x=0, y=0)
 
-# tkオブジェクトの作成
+# Ctkオブジェクトの作成
 root = customtkinter.CTk()
-# ウィンドウのサイズと出現位置
-root.geometry('1000x600+200+50')
+
+# ウィンドウのサイズ（出現位置は一旦指定なし）
+root.geometry('1000x600')
 
 # クラスの呼び出し
 RandomViewerApp(root)
