@@ -115,14 +115,15 @@ class RandomViewerApp:
         self.canvas = tk.Canvas(root, width=self.canvas_w, height=self.canvas_h, bg='#E5E5E5', cursor='hand2')
         self.canvas.place(x=0, y=0)
 
-# Ctkオブジェクトの作成
-root = customtkinter.CTk()
+if __name__ == "__main__":
+    # Ctkオブジェクトの作成
+    root = customtkinter.CTk()
 
-# ウィンドウのサイズ（出現位置は一旦指定なし）
-root.geometry('1000x600')
+    # ウィンドウのサイズ（出現位置は一旦指定なし）
+    root.geometry('1000x600')
 
-# クラスの呼び出し
-RandomViewerApp(root)
+    # クラスの呼び出し
+    RandomViewerApp(root)
 
-# メインループの実行
-root.mainloop()
+    # メインループの実行
+    root.mainloop()
