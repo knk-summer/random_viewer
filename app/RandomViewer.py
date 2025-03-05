@@ -10,7 +10,7 @@ import os
 class RandomViewerApp:
     def __init__(self,root):
         # フォルダが選択されているか判別するために空文字格納
-        folder_name = ''
+        self.folder_name = ''
         self.all_images_paths = ''
         self.random_image = ''
         self.wedget(root)
@@ -18,21 +18,21 @@ class RandomViewerApp:
     # フォルダの選択
     def filedialog_clicked(self):
         iDir = os.path.abspath(os.path.dirname(__file__))
-        global folder_name
         # 選択したフォルダの絶対パスを取得
-        folder_name = tk.filedialog.askdirectory(initialdir=iDir)
+        # キャンセル時は空文字が格納される
+        self.folder_name = tk.filedialog.askdirectory(initialdir=iDir)
         self.load_images()
 
     # 選択したフォルダ内の全画像ファイルの絶対パスを取得
     def load_images(self):
-        if folder_name:
+        if self.folder_name:
             # 取得したパスを格納するために空のリストを作成
             paths = []
             # 画像ファイルかの判断に使う
             exts = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
 
             # 選択したフォルダの中身を取得
-            for root, dirs, files in os.walk(folder_name):
+            for root, dirs, files in os.walk(self.folder_name):
                 for name in files + dirs:
                     image_path = os.path.join(root, name)
                     # パスの末尾の文字列（拡張子）を見て画像ファイルの場合のみリストに追加
