@@ -60,22 +60,26 @@ class RandomViewerApp:
         w = self.op_img.width
         h = self.op_img.height
 
+        # 画像サイズがcanvas領域よりも小さい場合、そのままのサイズにする
+        if w <= self.canvas_w and h <= self.canvas_h:
+            self.display_img = self.op_img
+
         # 画像の横幅がcanvasの横幅より大きい場合リサイズ
         if w > self.canvas_w:
-            self.resize_img = self.op_img.resize((int(w * (self.canvas_w / w)), int(h * (self.canvas_w / w))))
-            w = self.resize_img.width
-            h = self.resize_img.height
+            self.display_img = self.op_img.resize((int(w * (self.canvas_w / w)), int(h * (self.canvas_w / w))))
+            w = self.display_img.width
+            h = self.display_img.height
             
         # 画像の縦幅がcanvasの縦幅より大きい場合リサイズ
         if h > self.canvas_h:
-            self.resize_img = self.op_img.resize((int(w * (self.canvas_h / h)), int(h * (self.canvas_h / h))))
-            w = self.resize_img.width
-            h = self.resize_img.height
-
+            self.display_img = self.op_img.resize((int(w * (self.canvas_h / h)), int(h * (self.canvas_h / h))))
+            w = self.display_img.width
+            h = self.display_img.height
+        
         # 画像をcanvas上に表示
-        self.display_img = ImageTk.PhotoImage(self.resize_img)
+        self.canvas_img = ImageTk.PhotoImage(self.display_img)
         # 画像の位置がcanvasの中央になるように指定
-        self.canvas.create_image((self.canvas_w - w) / 2, (self.canvas_h - h) / 2, image=self.display_img, anchor=tk.NW)
+        self.canvas.create_image((self.canvas_w - w) / 2, (self.canvas_h - h) / 2, image=self.canvas_img, anchor=tk.NW)
         # 画像クリック時の処理
         self.canvas.bind('<Button-1>',self.image_clicked)
     
